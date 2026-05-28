@@ -73,8 +73,9 @@ User Input: Text description + Component Image
 ```
 RAG based Repair Assistant/
 │
-├── app.py                  # Main Streamlit application
-├── build_db.py             # Script to build the ChromaDB vector store
+├── frontend\app.py         # Main Streamlit application
+├── backend\database\build_db.py  # Script to build the ChromaDB vector store
+├── frontend_web\           # Static HTML/CSS/JS frontend for FastAPI
 ├── run.bat                 # One-click launcher (Windows)
 │
 ├── .env                    # Your API keys (NOT uploaded to GitHub)
@@ -82,18 +83,18 @@ RAG based Repair Assistant/
 ├── .gitignore              # Prevents secrets and build files from being committed
 ├── requirements.txt        # Python dependencies
 │
-├── data/                   # PDF repair manuals (source documents for RAG)
+├── backend\database\data\         # PDF repair manuals (source documents for RAG)
 │   ├── repair.pdf
 │   ├── PC Hardware...pdf
 │   └── latitude-lm...pdf
-│
-├── knowledge/              # Custom text knowledge files (also indexed by RAG)
+
+├── backend\database\knowledge\    # Custom text knowledge files (also indexed by RAG)
 │   ├── laptop_issues.txt
 │   ├── desktop_issues.txt
 │   ├── mobile_issues.txt
 │   └── general_electronics.txt
-│
-└── chroma_db/              # Vector database (auto-generated, NOT in GitHub)
+
+└── backend\database\chroma_db\    # Vector database (auto-generated, NOT in GitHub)
 ```
 
 ---
@@ -102,7 +103,7 @@ RAG based Repair Assistant/
 
 ### Prerequisites
 
-- Python 3.10 or higher
+- Python 3.10 or Python 3.11 is recommended
 - A Google Gemini API key (free tier works, get it at [aistudio.google.com](https://aistudio.google.com))
 - A Roboflow API key (for future object detection integration)
 
@@ -162,10 +163,10 @@ ROBOFLOW_API_KEY=your_actual_roboflow_api_key_here
 
 ---
 
-### Step 5 — Add Repair Documents to `data/`
+### Step 5 — Add Repair Documents to `backend\database\data/`
 
-Place any PDF repair manuals, device guides, or technical documents into the `data/` folder.  
-You can also add `.txt` knowledge files to the `knowledge/` folder.
+Place any PDF repair manuals, device guides, or technical documents into the `backend\database\data/` folder.  
+You can also add `.txt` knowledge files to the `backend\database\knowledge/` folder.
 
 > The more relevant documents you add, the better the diagnoses will be.
 
@@ -177,7 +178,7 @@ This step indexes all your documents into ChromaDB. **Run it once before launchi
 
 ```bash
 # Make sure your .venv is active first
-python build_db.py
+python backend\database\build_db.py
 ```
 
 > ⚠️ **Important:** This uses the Google Embedding API and has rate limits on the free tier (100 requests/minute).  
@@ -191,7 +192,12 @@ python build_db.py
 
 **Option B — Command line:**
 ```bash
-.venv\Scripts\streamlit.exe run app.py --server.port 8502
+.venv\Scripts\streamlit.exe run frontend\app.py --server.port 8502
+```
+
+**Option C — FastAPI static frontend:**
+```bash
+.venv\Scripts\python.exe -m uvicorn main:app --port 8000
 ```
 
 Then open your browser at: **http://localhost:8502**
@@ -329,5 +335,6 @@ Built with:
 - [ChromaDB](https://trychroma.com) — vector database
 - [Google Gemini](https://aistudio.google.com) — LLM + Vision + Embeddings
 - [Roboflow](https://roboflow.com) — Object detection (coming soon)
-#   R e p a i r - A s s i s t a n t  
+#   R e p a i r - A s s i s t a n t 
+ 
  

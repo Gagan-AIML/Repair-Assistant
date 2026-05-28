@@ -7,15 +7,10 @@ langchain-text-splitters
 chromadb
 pypdf
 python-dotenv
-google-generativeai
 Pillow
 google-genai
-duckduckgo-search
-inference-sdk
-supervision
 opencv-python-headless
 requests
-roboflow
 fastapi
 uvicorn
-python-multipart
+python-multipart
