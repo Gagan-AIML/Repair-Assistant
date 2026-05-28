@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RepairAI — Multimodal Device Diagnosis</title>
+  <meta name="description" content="AI-powered hardware diagnosis using computer vision, OCR, and RAG retrieval." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/style.css" />
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+<div id="app" :class="{ 'sidebar-open': sidebarOpen }">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar" :class="{ open: sidebarOpen }">
+    <div class="sidebar-header">
+      <span class="sidebar-title">📋 History</span>
+      <button class="sidebar-close" @click="sidebarOpen = false">✕</button>
+    </div>
+    <div class="sidebar-empty" v-if="history.length === 0">
+      <div class="empty-hist-icon">🗂️</div>
+      <p>No saved diagnoses yet.<br>Run a diagnosis and save it!</p>
+    </div>
+    <ul class="history-list" v-else>
+      <li v-for="(item, idx) in history" :key="item.id"
+          class="history-item"
+          :class="{ active: activeHistoryId === item.id }"
+          @click="loadHistory(item)">
+        <div class="hist-meta">
+          <span class="hist-device">{{ item.device_type }}</span>
+          <span class="hist-date">{{ item.date }}</span>
+        </div>
+        <div class="hist-issue">{{ item.issue.slice(0, 60) }}{{ item.issue.length > 60 ? '…' : '' }}</div>
+        <div class="hist-verdict" :class="item.is_user_fix ? 'verdict-fix' : 'verdict-service'">
+          {{ item.is_user_fix ? '✅ User Fix' : '🏥 Service Center' }}
+        </div>
+        <button class="hist-delete" @click.stop="deleteHistory(item.id)" title="Delete">🗑️</button>
+      </li>
+    </ul>
+    <div class="sidebar-footer" v-if="history.length > 0">
+      <button class="btn-clear-all" @click="clearAllHistory">🗑️ Clear All</button>
+    </div>
+  </aside>
+
+  <!-- ── SIDEBAR OVERLAY ── -->
+  <div class="sidebar-overlay" v-if="sidebarOpen" @click="sidebarOpen = false"></div>
+
+  <!-- ── MAIN CONTENT ── -->
+  <div class="main-wrapper">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="btn-menu" @click="sidebarOpen = !sidebarOpen" title="History">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="logo">
+          <span class="logo-icon">🔧</span>
+          <span class="logo-text">RepairAI</span>
+        </div>
+      </div>
+      <div class="topbar-center" v-if="results">
+        <span class="topbar-status">
+          <span class="status-dot"></span> Diagnosis Ready
+        </span>
+      </div>
+      <div class="topbar-right">
+        <button class="btn-new" @click="resetAll" v-if="results">＋ New Diagnosis</button>
+        <button class="btn-save" @click="saveToHistory" v-if="results && !currentSaved">💾 Save</button>
+        <span class="saved-badge" v-if="currentSaved">✓ Saved</span>
+      </div>
+    </header>
+
+    <!-- HERO (only when no results) -->
+    <section class="hero" v-if="!results && !isLoading">
+      <div class="hero-glow"></div>
+      <h1 class="hero-title">AI-Powered Device Diagnosis</h1>
+      <p class="hero-subtitle">Upload a component photo, describe your issue — get expert-level repair guidance in seconds.</p>
+      <div class="pipeline-row">
+        <div class="pipe-step"><div class="pipe-icon">📸</div><div class="pipe-label">Image</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step"><div class="pipe-icon">🔍</div><div class="pipe-label">Detection</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step"><div class="pipe-icon">📝</div><div class="pipe-label">OCR</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step"><div class="pipe-icon">🧠</div><div class="pipe-label">RAG</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step"><div class="pipe-icon">🛠️</div><div class="pipe-label">Report</div></div>
+      </div>
+    </section>
+
+    <!-- INPUT FORM -->
+    <section class="input-section" v-if="!results && !isLoading">
+      <div class="input-grid">
+        <!-- Issue -->
+        <div class="card input-card">
+          <div class="card-head">
+            <span class="card-icon">📝</span>
+            <span class="card-title">Describe the Issue</span>
+          </div>
+          <textarea id="issueInput" v-model="userIssue"
+            placeholder="e.g., My laptop won't turn on. The charging LED blinks once then goes dark. Last worked fine yesterday after a Windows update..."></textarea>
+          <div class="char-count" :class="{ warn: userIssue.length > 400 }">{{ userIssue.length }} chars</div>
+        </div>
+
+        <!-- Image -->
+        <div class="card input-card">
+          <div class="card-head">
+            <span class="card-icon">📸</span>
+            <span class="card-title">Component Image <span class="optional">(optional)</span></span>
+          </div>
+          <div class="upload-zone" :class="{ 'has-image': imagePreview, 'drag-over': isDragging }"
+               @dragover.prevent="isDragging=true" @dragleave="isDragging=false" @drop.prevent="onDrop">
+            <input type="file" id="fileInput" accept="image/*" @change="onFileChange" />
+            <div class="upload-placeholder" v-if="!imagePreview">
+              <div class="upload-icon">📂</div>
+              <p>Drag & drop or <label for="fileInput" class="upload-link">browse</label></p>
+              <p class="upload-hint">JPG, PNG, WEBP, BMP</p>
+            </div>
+            <img v-if="imagePreview" :src="imagePreview" class="preview-img" alt="Preview" />
+            <button v-if="imagePreview" class="btn-remove-img" @click.stop="clearImage">✕</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error -->
+      <div class="error-bar" v-if="error">⚠️ {{ error }}</div>
+
+      <!-- CTA -->
+      <div class="cta-row">
+        <button id="diagnoseBtn" class="btn-diagnose" @click="runDiagnosis"
+                :disabled="!userIssue.trim()">
+          🔍 Run AI Diagnosis
+        </button>
+        <p class="cta-hint">Powered by Gemini 2.5 Flash · YOLO · RAG</p>
+      </div>
+    </section>
+
+    <!-- LOADING STATE -->
+    <section class="loading-section" v-if="isLoading">
+      <div class="loading-card">
+        <div class="loading-spinner"></div>
+        <div class="loading-steps">
+          <div class="load-step" :class="{ done: loadStep > 0, active: loadStep === 0 }">
+            <span class="step-dot"></span> Loading knowledge base
+          </div>
+          <div class="load-step" :class="{ done: loadStep > 1, active: loadStep === 1 }">
+            <span class="step-dot"></span> Running YOLO · OCR · Vision in parallel
+          </div>
+          <div class="load-step" :class="{ done: loadStep > 2, active: loadStep === 2 }">
+            <span class="step-dot"></span> RAG retrieval + LLM generation
+          </div>
+          <div class="load-step" :class="{ done: loadStep > 3, active: loadStep === 3 }">
+            <span class="step-dot"></span> Formatting repair report
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULTS -->
+    <section class="results-section" v-if="results">
+
+      <!-- Summary bar -->
+      <div class="summary-bar">
+        <div class="summary-chip green"><span class="chip-dot"></span> YOLO: {{ results.detected_components.length }} components</div>
+        <div class="summary-chip" :class="hasOcr ? 'green' : 'grey'"><span class="chip-dot"></span> OCR: {{ hasOcr ? 'Active' : 'N/A' }}</div>
+        <div class="summary-chip" :class="hasVision ? 'green' : 'grey'"><span class="chip-dot"></span> Vision: {{ hasVision ? 'Active' : 'N/A' }}</div>
+        <div class="summary-chip green"><span class="chip-dot"></span> RAG: Retrieved</div>
+        <div class="summary-chip green"><span class="chip-dot"></span> LLM: Generated</div>
+      </div>
+
+      <!-- Results grid -->
+      <div class="results-grid">
+
+        <!-- LEFT COLUMN -->
+        <div class="results-col">
+
+          <!-- Annotated image + components -->
+          <div class="card result-card" v-if="results.annotated_image || results.detected_components.length > 0">
+            <div class="card-head"><span class="card-icon">🔍</span><span class="card-title">Component Detection</span></div>
+            <img v-if="results.annotated_image" :src="results.annotated_image" class="annotated-img" alt="YOLO detection" />
+            <div class="no-img-note" v-else>No annotated image returned.</div>
+            <div class="chips-row" v-if="results.detected_components.length > 0">
+              <span v-for="c in results.detected_components" :key="c" class="chip-component">🧩 {{ c }}</span>
+            </div>
+            <p class="text-dim" v-else>No components detected visually.</p>
+          </div>
+
+          <!-- OCR terminal -->
+          <div class="card result-card" v-if="hasOcr">
+            <div class="card-head"><span class="card-icon" style="color:#22d3ee">📝</span><span class="card-title" style="color:#22d3ee">OCR Extraction</span></div>
+            <div class="terminal">
+              <div class="terminal-bar"><span class="t-dot red"></span><span class="t-dot yellow"></span><span class="t-dot green"></span><span class="t-name">ocr_output.log</span></div>
+              <div class="terminal-body">
+                <div v-for="line in ocrLines" :key="line" class="t-line"><span class="t-prompt">❯</span> {{ line }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Vision analysis -->
+          <div class="card result-card" v-if="hasVision">
+            <div class="card-head"><span class="card-icon" style="color:#93c5fd">🔬</span><span class="card-title" style="color:#93c5fd">Visual Damage Analysis</span></div>
+            <div class="md-content" v-html="md(results.vision_analysis)"></div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="results-col">
+
+          <!-- Causes -->
+          <div class="card result-card causes-card" v-if="results.sections.causes">
+            <div class="card-head"><span class="card-icon" style="color:#f59e0b">⚠️</span><span class="card-title" style="color:#f59e0b">Possible Causes</span></div>
+            <div class="md-content" v-html="md(results.sections.causes)"></div>
+          </div>
+
+          <!-- Fixes -->
+          <div class="card result-card fixes-card" v-if="results.sections.fixes">
+            <div class="card-head"><span class="card-icon" style="color:#10b981">🛠️</span><span class="card-title" style="color:#10b981">Recommended Fixes</span></div>
+            <div class="md-content" v-html="md(results.sections.fixes)"></div>
+          </div>
+
+          <!-- Verdict + Tips side-by-side -->
+          <div class="verdict-tips-row">
+            <div class="card result-card verdict-card" v-if="results.sections.verdict">
+              <div class="card-head"><span class="card-icon" style="color:#60a5fa">📋</span><span class="card-title" style="color:#60a5fa">Verdict</span></div>
+              <div class="verdict-badge" :class="results.is_user_fix ? 'badge-fix' : 'badge-service'">
+                {{ results.is_user_fix ? '✅ User Can Fix This' : '🏥 Go To Service Center' }}
+              </div>
+              <div class="md-content" v-html="md(results.sections.verdict)"></div>
+            </div>
+            <div class="card result-card tips-card" v-if="results.sections.tips">
+              <div class="card-head"><span class="card-icon" style="color:#c4b5fd">💡</span><span class="card-title" style="color:#c4b5fd">Prevention Tips</span></div>
+              <div class="md-content" v-html="md(results.sections.tips)"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── FOLLOW-UP CHAT ── -->
+      <div class="chat-section">
+        <div class="chat-header">
+          <span class="chat-icon">💬</span>
+          <span class="chat-title">Follow-up Questions</span>
+          <span class="chat-subtitle">Ask anything about this diagnosis</span>
+        </div>
+
+        <!-- Chat messages -->
+        <div class="chat-messages" ref="chatBox">
+          <div class="chat-welcome" v-if="chatMessages.length === 0">
+            <p>👋 Diagnosis complete! Have follow-up questions? Ask me anything about the causes, fixes, or parts needed.</p>
+            <div class="chat-suggestions">
+              <button class="suggestion-btn" @click="askSuggestion('What tools do I need to fix this?')">What tools do I need?</button>
+              <button class="suggestion-btn" @click="askSuggestion('What is the estimated cost of repair?')">Estimated repair cost?</button>
+              <button class="suggestion-btn" @click="askSuggestion('How long will this repair take?')">How long will it take?</button>
+              <button class="suggestion-btn" @click="askSuggestion('Is it safe to use the device in this condition?')">Is it safe to use now?</button>
+            </div>
+          </div>
+
+          <div v-for="msg in chatMessages" :key="msg.id" class="chat-msg" :class="msg.role">
+            <div class="msg-avatar">{{ msg.role === 'user' ? '👤' : '🤖' }}</div>
+            <div class="msg-bubble">
+              <div class="msg-text" v-html="msg.role === 'assistant' ? md(msg.text) : msg.text"></div>
+              <div class="msg-time">{{ msg.time }}</div>
+            </div>
+          </div>
+
+          <div class="chat-msg assistant" v-if="chatLoading">
+            <div class="msg-avatar">🤖</div>
+            <div class="msg-bubble">
+              <div class="typing-dots"><span></span><span></span><span></span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat input -->
+        <div class="chat-input-row">
+          <textarea
+            id="chatInput"
+            v-model="chatQuestion"
+            placeholder="Ask a follow-up question…"
+            @keydown.enter.exact.prevent="sendChat"
+            rows="1"></textarea>
+          <button class="btn-chat-send" @click="sendChat" :disabled="!chatQuestion.trim() || chatLoading">
+            {{ chatLoading ? '…' : '➤' }}
+          </button>
+        </div>
+        <p class="chat-hint">Press Enter to send · Shift+Enter for new line</p>
+      </div>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+      <span>RepairAI</span>
+      <span class="footer-sep">·</span>
+      <span>Gemini 2.5 Flash + RAG + YOLO</span>
+      <span class="footer-sep">·</span>
+      <span>🧠 AI-Powered Device Diagnosis</span>
+    </footer>
+
+  </div><!-- end main-wrapper -->
+</div><!-- end app -->
+
+<script src="/static/script.js"></script>
+</body>
+</html>

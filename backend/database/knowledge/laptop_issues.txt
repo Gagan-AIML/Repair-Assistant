@@ -1,0 +1,162 @@
+LAPTOP REPAIR KNOWLEDGE BASE
+==============================
+
+ISSUE: Laptop not turning on / no power
+COMPONENT: Power button, battery, charging port, motherboard
+CAUSES:
+- Dead battery or battery not charging
+- Faulty power adapter or charging cable
+- Loose or damaged charging port
+- Failed motherboard or blown fuse
+- RAM not seated properly (causes no POST)
+FIX:
+1. Check if charging LED lights up when plugged in
+2. Try a different power adapter with correct voltage
+3. Remove battery and run on AC power only
+4. Hold power button 30 seconds (drain residual charge), then try again
+5. Open laptop and reseat RAM modules
+6. Check for blown capacitors on motherboard (visual inspection)
+DIFFICULTY: Medium
+SERVICE_CENTER_REQUIRED: Yes, if motherboard is faulty
+
+ISSUE: Laptop screen is black / no display
+COMPONENT: LCD screen, display cable, GPU, BIOS
+CAUSES:
+- Damaged display cable (flex cable between lid and body)
+- Failed backlight or inverter
+- GPU failure
+- Corrupted BIOS
+- Screen physically damaged
+FIX:
+1. Connect external monitor via HDMI — if it works, screen/cable is faulty
+2. Check display cable connection at both ends (near hinge area)
+3. Update or reflash BIOS
+4. Replace LCD screen if backlight is dead
+DIFFICULTY: Medium-Hard
+SERVICE_CENTER_REQUIRED: Yes if GPU or motherboard is the cause
+
+ISSUE: Laptop overheating / shutting down randomly
+COMPONENT: CPU, cooling fan, thermal paste, heat sink
+CAUSES:
+- Dust clogged in cooling vents or heatsink fins
+- Dried out thermal paste on CPU/GPU
+- Failing or dead cooling fan
+- Blocked air vents (using on soft surfaces)
+FIX:
+1. Use compressed air to blow out dust from vents
+2. Open back panel, remove heatsink, clean old thermal paste
+3. Apply fresh thermal paste (Arctic Silver 5 or Noctua NT-H1)
+4. Check fan speed with HWMonitor — replace fan if speed is 0 RPM
+5. Use laptop on hard flat surface or buy a cooling pad
+DIFFICULTY: Easy-Medium (user can do this)
+SERVICE_CENTER_REQUIRED: No, user can fix with basic tools
+
+ISSUE: Laptop keyboard not working / some keys not responding
+COMPONENT: Keyboard, keyboard connector, motherboard header
+CAUSES:
+- Spilled liquid damaging keyboard membrane
+- Loose keyboard ribbon cable
+- Individual key switch failure
+- Software/driver issue
+FIX:
+1. Check Device Manager for keyboard driver errors
+2. Try external USB keyboard — if it works, internal keyboard is faulty
+3. Open laptop, check ribbon cable seated properly in connector
+4. Clean under keys with compressed air and isopropyl alcohol
+5. Replace keyboard (relatively inexpensive, user-replaceable on most models)
+DIFFICULTY: Easy
+SERVICE_CENTER_REQUIRED: No, keyboard replacement is user-doable
+
+ISSUE: Laptop battery draining fast / not charging
+COMPONENT: Battery, charging IC, charging port
+CAUSES:
+- Old/degraded battery (normal after 2-3 years)
+- Faulty charging IC on motherboard
+- Damaged charging port (loose or bent pins)
+- Wrong charger wattage
+FIX:
+1. Check battery health: run "powercfg /batteryreport" in cmd
+2. If battery health < 60%, replace the battery
+3. Check charging port for bent/broken pins
+4. Try original manufacturer charger
+5. Calibrate battery: charge to 100%, drain to 0%, recharge
+DIFFICULTY: Easy (battery replacement is user-doable on most laptops)
+SERVICE_CENTER_REQUIRED: Yes, if charging IC is faulty
+
+ISSUE: Laptop running very slow / lagging
+COMPONENT: RAM, HDD/SSD, CPU, OS
+CAUSES:
+- Too many startup programs
+- HDD failing (bad sectors)
+- Insufficient RAM (less than 8GB for modern use)
+- Malware infection
+- Thermal throttling due to overheating
+FIX:
+1. Open Task Manager — check CPU, RAM, Disk usage
+2. Disable unnecessary startup programs
+3. Run "chkdsk /f /r" to check disk health
+4. Upgrade RAM if possible (check if slots are available)
+5. Replace HDD with SSD for major performance boost
+6. Scan for malware with Malwarebytes
+DIFFICULTY: Easy-Medium (user can do this)
+SERVICE_CENTER_REQUIRED: No
+
+ISSUE: Laptop WiFi not working / keeps disconnecting
+COMPONENT: WiFi card, antenna cables, router
+CAUSES:
+- Outdated or corrupt WiFi driver
+- Loose WiFi antenna cables
+- Failed WiFi card (M.2 or mini PCIe)
+- Interference from 2.4GHz devices
+FIX:
+1. Update WiFi driver from manufacturer website
+2. Forget and reconnect to WiFi network
+3. Change router channel to 5GHz
+4. Open laptop, check antenna cables connected to WiFi card
+5. Replace WiFi card (M.2 WiFi cards are cheap and easy to swap)
+DIFFICULTY: Medium
+SERVICE_CENTER_REQUIRED: No, user can replace WiFi card
+
+ISSUE: Laptop USB ports not working
+COMPONENT: USB controller, USB port, motherboard header
+CAUSES:
+- Driver issues
+- Physical damage to USB port
+- Failed USB controller chip on motherboard
+FIX:
+1. Try different USB device to rule out device fault
+2. Uninstall USB controllers in Device Manager, reboot
+3. Check for bent pins inside USB port
+4. Try USB-C or different port type
+DIFFICULTY: Easy
+SERVICE_CENTER_REQUIRED: Yes, if USB controller chip is damaged
+
+ISSUE: Laptop making loud clicking or grinding noise
+COMPONENT: HDD, cooling fan
+CAUSES:
+- HDD click of death (mechanical failure)
+- Fan bearing failure
+- Loose screw vibrating against chassis
+FIX:
+1. Run CrystalDiskInfo — check HDD health status
+2. If HDD shows BAD or CAUTION, back up data IMMEDIATELY
+3. Listen carefully — noise from top (fan area) vs bottom (HDD area)
+4. Replace HDD with SSD to eliminate HDD noise
+5. Replace cooling fan if grinding noise is from fan
+DIFFICULTY: Easy-Medium
+SERVICE_CENTER_REQUIRED: No for fan/HDD replacement; Yes if noise is from motherboard components
+
+ISSUE: Laptop screen flickering
+COMPONENT: LCD, display cable, GPU driver
+CAUSES:
+- Loose display cable (especially near hinge)
+- Incompatible or corrupt GPU driver
+- LCD panel failing
+- Refresh rate set incorrectly
+FIX:
+1. Open Display Settings → change refresh rate (60Hz vs 144Hz)
+2. Roll back GPU driver or install latest version
+3. Open lid slowly — if flicker stops at certain angle, cable is damaged near hinge
+4. Replace display cable (relatively cheap fix)
+DIFFICULTY: Medium
+SERVICE_CENTER_REQUIRED: No for cable replacement; Yes for GPU failure

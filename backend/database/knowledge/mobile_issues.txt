@@ -1,0 +1,142 @@
+SMARTPHONE REPAIR KNOWLEDGE BASE
+===================================
+
+ISSUE: Phone not charging / charging very slowly
+COMPONENT: Charging port, battery, charging IC, cable
+CAUSES:
+- Lint/debris packed in USB-C or Lightning port
+- Bent or damaged charging port pins
+- Failing battery
+- Defective charging cable or adapter
+- Faulty charging IC on motherboard
+FIX:
+1. Clean charging port with a toothpick or SIM eject tool (gently)
+2. Try multiple cables and adapters
+3. Check for damaged pins inside port with flashlight
+4. Try wireless charging if supported — if it works, port is the issue
+5. Check battery health in Settings (iPhone) or use AccuBattery app (Android)
+6. Replace battery if capacity below 70%
+DIFFICULTY: Easy (cleaning port, battery replacement)
+SERVICE_CENTER_REQUIRED: Yes, if charging IC is faulty
+
+ISSUE: Phone screen cracked or not responding to touch
+COMPONENT: LCD/OLED display, digitizer, display connector
+CAUSES:
+- Physical impact damage
+- Separated digitizer from display
+- Damaged display connector on motherboard
+FIX:
+1. Check if display still shows image (only digitizer/touch is broken vs full display)
+2. Try screen replacement kit (most phones have iFixit guides)
+3. Samsung and iPhone screens are commonly available and user-replaceable
+4. Make sure to heat the screen edges before prying to soften adhesive
+DIFFICULTY: Medium-Hard
+SERVICE_CENTER_REQUIRED: Yes if not comfortable with screen replacement
+
+ISSUE: Phone battery draining fast
+COMPONENT: Battery, apps, settings
+CAUSES:
+- Old/degraded battery
+- Background apps consuming power
+- Always-on display settings
+- Weak signal causing constant network search
+FIX:
+1. Check Battery Usage in Settings — identify apps draining power
+2. Disable always-on display, reduce screen brightness
+3. Turn on Battery Saver mode
+4. Check battery health — replace if under 80% capacity
+5. Factory reset if no app is causing it (software bug)
+DIFFICULTY: Easy
+SERVICE_CENTER_REQUIRED: No (battery is user-replaceable on many phones)
+
+ISSUE: Phone overheating
+COMPONENT: CPU (SoC), battery, cooling system
+CAUSES:
+- Heavy app usage (gaming, video)
+- Background processes
+- Defective battery
+- Charging while using phone
+FIX:
+1. Remove phone case while charging
+2. Close background apps
+3. Update apps and OS
+4. Avoid using phone while charging
+5. If battery swells, stop using immediately and replace
+DIFFICULTY: Easy
+SERVICE_CENTER_REQUIRED: Yes, if battery is swollen (fire hazard)
+
+ISSUE: Phone camera not working
+COMPONENT: Camera module, camera connector, software
+CAUSES:
+- Loose camera flex cable
+- Camera module physical damage (from drop)
+- Software crash
+- Third-party app conflict
+FIX:
+1. Force close camera app and restart
+2. Clear camera app cache/data in Settings
+3. Factory reset to test if software issue
+4. If dropped recently, camera module may be dislodged — needs reseating
+DIFFICULTY: Easy for software; Medium for hardware
+SERVICE_CENTER_REQUIRED: Yes, if camera module needs physical replacement
+
+ISSUE: Phone speaker not working / no sound
+COMPONENT: Speaker, audio IC, headphone jack
+CAUSES:
+- Debris in speaker grille
+- Water damage to speaker
+- Software volume/mute issue
+- Failed audio IC
+FIX:
+1. Check phone isn't in silent mode
+2. Clean speaker grille with soft toothbrush
+3. Play audio with headphones — if that works, speaker is faulty
+4. Try the "water eject" feature (iOS) or Sonic app (Android) to clear water
+5. Replace speaker (usually inexpensive)
+DIFFICULTY: Easy for cleaning; Medium for replacement
+SERVICE_CENTER_REQUIRED: Yes if audio IC is faulty
+
+ISSUE: Phone not connecting to WiFi
+COMPONENT: WiFi chip, antenna, settings
+CAUSES:
+- Incorrect password or settings
+- WiFi antenna cable disconnected (common after drops)
+- Software bug
+- Router compatibility issue
+FIX:
+1. Forget and reconnect to WiFi network
+2. Toggle Airplane Mode on/off
+3. Reset Network Settings
+4. Update phone software
+5. Test with different WiFi network
+DIFFICULTY: Easy
+SERVICE_CENTER_REQUIRED: Yes if WiFi antenna is physically damaged
+
+ISSUE: Phone keeps restarting randomly
+COMPONENT: Battery, RAM, OS, apps
+CAUSES:
+- Defective battery (voltage drops cause restart)
+- Software bug or corrupt OS
+- Incompatible app
+- Overheating causing thermal shutdown
+FIX:
+1. Boot in Safe Mode — if restarts stop, an app is causing it
+2. Update all apps and OS
+3. Check battery health
+4. Factory reset as last resort
+DIFFICULTY: Easy
+SERVICE_CENTER_REQUIRED: Yes if hardware (battery/motherboard) is the cause
+
+ISSUE: Phone buttons not working (volume, power)
+COMPONENT: Physical buttons, flex cable
+CAUSES:
+- Physical damage or wear
+- Debris under buttons
+- Flex cable disconnected internally
+FIX:
+1. Clean around button edges with compressed air
+2. Use AssistiveTouch (iOS) or accessibility shortcuts as workaround
+3. Open phone and reseat button flex cable
+4. Replace flex cable if broken
+DIFFICULTY: Medium-Hard
+SERVICE_CENTER_REQUIRED: Yes for most users (requires opening phone)

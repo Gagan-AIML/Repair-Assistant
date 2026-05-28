@@ -1,0 +1,122 @@
+GENERAL ELECTRONICS REPAIR KNOWLEDGE BASE
+==========================================
+
+ISSUE: Device not powering on
+COMPONENT: Power supply, fuse, battery, power IC
+CAUSES:
+- Blown internal fuse
+- Failed voltage regulator
+- Dead capacitor on power rail
+- Damaged power connector
+FIX:
+1. Check power source (outlet, adapter, cable)
+2. Inspect for blown fuse on PCB (glass fuse or SMD fuse)
+3. Measure voltage at power input with multimeter
+4. Inspect capacitors for bulging or leakage
+DIFFICULTY: Hard
+SERVICE_CENTER_REQUIRED: Yes, requires soldering skills
+
+ISSUE: Device getting hot / burning smell
+COMPONENT: Capacitors, MOSFETs, voltage regulators, short circuits
+CAUSES:
+- Short circuit on PCB
+- Failed capacitor (electrolytic caps degrade over time)
+- MOSFET failure
+- Incorrect voltage supply
+FIX:
+1. STOP using device immediately if burning smell
+2. Visually inspect PCB for burn marks or bulging capacitors
+3. Use multimeter to check for shorts between power rails
+4. Replace failed capacitors (desoldering and resoldering required)
+DIFFICULTY: Very Hard
+SERVICE_CENTER_REQUIRED: Yes — burning smell is a serious issue
+
+ISSUE: Display showing lines or dead pixels
+COMPONENT: LCD/OLED panel, display driver IC, ribbon cable
+CAUSES:
+- Damaged ribbon/flex cable
+- Failed display driver IC
+- Physical pressure on panel
+- Static discharge damage
+FIX:
+1. Check if lines appear on all inputs (confirms panel issue vs source)
+2. Reseat display ribbon cable carefully
+3. If vertical lines: likely column driver failure in panel
+4. Replace display panel if physically damaged
+DIFFICULTY: Medium
+SERVICE_CENTER_REQUIRED: Yes for display IC; No for cable reseating
+
+ISSUE: Device making unusual noise
+COMPONENT: Cooling fan, HDD, coils, speakers
+CAUSES:
+- Fan bearing failure (grinding/rattling)
+- Coil whine from inductors under high load
+- Loose component vibrating in chassis
+FIX:
+1. Identify noise source: fan (mechanical grinding) vs electrical (high-pitched whine)
+2. Fan noise: lubricate or replace fan
+3. Coil whine: normal but check for loose inductors
+4. Rattle: find and secure loose screw or component
+DIFFICULTY: Easy-Medium
+SERVICE_CENTER_REQUIRED: No for fan replacement; Possibly for other causes
+
+ISSUE: USB device not recognized
+COMPONENT: USB port, USB controller, cable
+CAUSES:
+- Bent pins in USB port
+- Failed USB hub/controller chip
+- USB driver corruption
+- Damaged cable
+FIX:
+1. Try different USB cable and different port
+2. Uninstall and reinstall USB host controllers in Device Manager
+3. Check port for debris or bent pins
+4. Test on different computer to isolate cable vs port
+DIFFICULTY: Easy
+SERVICE_CENTER_REQUIRED: Yes if USB controller chip is failed
+
+ISSUE: HDMI / display output not working
+COMPONENT: HDMI port, GPU/SoC, HDMI cable, TV/Monitor
+CAUSES:
+- Faulty HDMI cable
+- Loose HDMI port
+- GPU output failure
+- Incorrect input selected on TV/monitor
+FIX:
+1. Check correct input source on TV/monitor
+2. Try different HDMI cable
+3. Try different HDMI port on TV
+4. Test with DisplayPort or VGA adapter
+DIFFICULTY: Easy
+SERVICE_CENTER_REQUIRED: Yes if GPU output stage is damaged
+
+ISSUE: Device performance degraded over time
+COMPONENT: Storage (SSD/HDD), RAM, cooling, software
+CAUSES:
+- Storage drive fragmented or nearly full
+- RAM issue causing paging
+- Thermal throttling from dust
+- Software bloat or malware
+FIX:
+1. Ensure drive has 15-20% free space
+2. Clean cooling system (fans and heatsinks)
+3. Check for software issues and malware
+4. RAM test with memory diagnostic tools
+DIFFICULTY: Easy
+SERVICE_CENTER_REQUIRED: No
+
+COMPONENT IDENTIFICATION GUIDE:
+================================
+- CAPACITOR: Cylindrical (electrolytic) or small flat (ceramic) components, store charge
+- RESISTOR: Small cylinder with colored bands, limits current flow
+- TRANSISTOR: 3-legged component, acts as switch or amplifier
+- MOSFET: Flat or TO-220 package, used in power regulation
+- IC CHIP: Black rectangular chips, the brain of circuits
+- DIODE: Two-terminal component, allows current one way
+- INDUCTOR/COIL: Wire wound on core, used in power circuits
+- PCB TRACE: Copper pathways on green board
+- HEATSINK: Metal fins attached to hot components
+- THERMAL PASTE: Gray/silver paste between CPU and heatsink
+- CMOS BATTERY: Small round silver battery on motherboard
+- PSU: Power Supply Unit, converts AC to DC power
+- VRM: Voltage Regulator Module, supplies stable voltage to CPU/GPU

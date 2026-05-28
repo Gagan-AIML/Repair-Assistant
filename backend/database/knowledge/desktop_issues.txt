@@ -1,0 +1,145 @@
+DESKTOP PC REPAIR KNOWLEDGE BASE
+===================================
+
+ISSUE: Desktop PC not booting / no POST
+COMPONENT: PSU, RAM, GPU, motherboard, CPU
+CAUSES:
+- Power supply unit (PSU) failure
+- RAM not seated correctly (most common cause)
+- GPU not seated properly in PCIe slot
+- BIOS battery dead (CMOS battery)
+- CPU not properly installed or pins bent
+FIX:
+1. Check all power cables are firmly connected (24-pin ATX, 8-pin CPU)
+2. Remove and reseat RAM — try one stick at a time
+3. Remove GPU, boot with integrated graphics
+4. Replace CMOS battery (CR2032, costs less than $2)
+5. Check CPU socket for bent pins
+6. Test PSU with paperclip test or multimeter
+DIFFICULTY: Easy-Medium
+SERVICE_CENTER_REQUIRED: No for RAM/GPU/CMOS; Yes for motherboard/CPU pin damage
+
+ISSUE: PC turns on but no display output
+COMPONENT: GPU, display cable, monitor, BIOS
+CAUSES:
+- Monitor connected to wrong port (motherboard vs GPU)
+- Failed GPU
+- Display cable (HDMI/DP) faulty
+- iGPU disabled in BIOS
+FIX:
+1. Make sure monitor is plugged into GPU ports NOT motherboard ports (when discrete GPU installed)
+2. Try a different cable (HDMI vs DisplayPort)
+3. Try a different monitor
+4. Boot into BIOS (clear CMOS) to reset GPU settings
+5. Test GPU in another system
+DIFFICULTY: Easy
+SERVICE_CENTER_REQUIRED: No for cable/monitor; Yes for GPU failure
+
+ISSUE: PC randomly restarts or blue screen (BSOD)
+COMPONENT: RAM, PSU, overheating, drivers
+CAUSES:
+- Faulty or incompatible RAM (most common BSOD cause)
+- Insufficient PSU wattage
+- CPU/GPU overheating
+- Corrupt system files or drivers
+FIX:
+1. Run Windows Memory Diagnostic tool (search in Start menu)
+2. Run MemTest86 overnight for thorough RAM test
+3. Check temperatures with HWMonitor — CPU should stay under 90°C
+4. Check Event Viewer for error codes after BSOD
+5. Run "sfc /scannow" in admin cmd to fix system files
+6. Update all drivers, especially GPU and chipset
+DIFFICULTY: Medium
+SERVICE_CENTER_REQUIRED: No for software/RAM; Yes for PSU or motherboard issues
+
+ISSUE: Desktop overheating
+COMPONENT: CPU cooler, case fans, thermal paste
+CAUSES:
+- Dust buildup on CPU cooler and case fans
+- Dried thermal paste
+- Poor airflow in case
+- CPU cooler too small for CPU TDP
+FIX:
+1. Clean all fans and heatsinks with compressed air
+2. Replace thermal paste on CPU (and GPU if needed)
+3. Ensure proper airflow: front fans intake, rear/top fans exhaust
+4. Add more case fans or upgrade CPU cooler
+5. Check if CPU cooler is properly mounted and seated
+DIFFICULTY: Easy-Medium
+SERVICE_CENTER_REQUIRED: No, user can do this
+
+ISSUE: GPU artifacting / graphical glitches on screen
+COMPONENT: GPU, VRAM, display cable
+CAUSES:
+- GPU overheating (most common)
+- Failing VRAM chips
+- Driver corruption
+- Overclocking instability
+FIX:
+1. Clean GPU heatsink — dust causes thermal throttling and artifacts
+2. Replace GPU thermal paste if model allows it
+3. Roll back or clean install GPU drivers (use DDU tool)
+4. Remove any GPU overclocks
+5. Test GPU in another system to confirm failure
+DIFFICULTY: Medium
+SERVICE_CENTER_REQUIRED: Yes, if VRAM is failing (hardware repair needed)
+
+ISSUE: HDD/SSD not detected by system
+COMPONENT: SATA cable, power cable, HDD/SSD, motherboard SATA controller
+CAUSES:
+- Loose SATA data or power cable
+- Drive not initialized in Disk Management
+- Failed drive
+- SATA controller disabled in BIOS
+FIX:
+1. Check Disk Management — is drive visible but unformatted?
+2. Try a different SATA port on motherboard
+3. Replace SATA data cable (they fail commonly)
+4. Ensure power cable from PSU is connected
+5. Test drive in USB enclosure on another PC
+DIFFICULTY: Easy
+SERVICE_CENTER_REQUIRED: No for cable/port issues; Yes if drive is dead
+
+ISSUE: PC making beeping sounds at boot
+COMPONENT: RAM, GPU, CPU (POST beep codes)
+CAUSES:
+- Beep codes indicate hardware failure
+- 1 long 2 short = GPU issue
+- 3 long beeps = RAM issue
+- Continuous beeps = RAM or PSU
+FIX:
+1. Count beep pattern and look up your motherboard manufacturer's beep codes
+2. For RAM beeps: remove and reseat all RAM sticks
+3. For GPU beeps: reseat GPU in PCIe slot
+4. Try clearing CMOS (remove battery 30 sec, replace)
+DIFFICULTY: Easy
+SERVICE_CENTER_REQUIRED: No for reseating; Yes if hardware is failed
+
+ISSUE: PC power supply making noise
+COMPONENT: PSU fan
+CAUSES:
+- Failing PSU fan bearing
+- PSU under too much load
+- Coil whine (high-pitched buzz)
+FIX:
+1. If fan is grinding: PSU fan bearing is dying — replace PSU
+2. If coil whine: normal at high load, but persistent whine indicates PSU quality issue
+3. Never open PSU to repair — dangerous capacitors inside
+DIFFICULTY: Easy (just replace PSU)
+SERVICE_CENTER_REQUIRED: No, user can replace PSU themselves
+
+ISSUE: Slow PC performance
+COMPONENT: HDD, RAM, CPU, OS
+CAUSES:
+- Mechanical HDD (vs SSD) bottlenecking system
+- Insufficient RAM
+- Malware
+- Fragmented HDD
+FIX:
+1. Check if boot drive is HDD — upgrade to SSD for huge improvement
+2. Run Task Manager — check which process uses most resources
+3. Add more RAM if slots available
+4. Run malware scan
+5. Defragment HDD (not SSD!)
+DIFFICULTY: Easy
+SERVICE_CENTER_REQUIRED: No
